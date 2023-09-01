@@ -11,10 +11,6 @@ public class FieldModel {
     private String type;
     private Geometry geometry;
     private Properties properties;
-
-    public String ffff (){
-        return properties.getIlAd();
-    }
 }
 
 
