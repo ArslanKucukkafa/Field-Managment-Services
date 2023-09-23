@@ -18,6 +18,7 @@
     <modules>
         <module>fieldcore-services</module>
         <module>idm-services</module>
+        <module>gateway-services</module>
     </modules>
 
     <properties>
