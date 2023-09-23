@@ -9,4 +9,6 @@ public class Role {
     @Id
     private int id;
     private String name;
+    private Permission permission;
+
 }

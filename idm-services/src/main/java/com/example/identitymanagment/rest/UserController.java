@@ -12,17 +12,18 @@ public class UserController {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
     @PostMapping("/sign-up")
-    public void signUp(@RequestBody UserRegisterResponse userRegisterResponse) {
+    public String signUp(@RequestBody UserRegisterResponse userRegisterResponse) {
         userDetailsService.saveUser(userRegisterResponse);
+        return  "sign-up success";
     }
     @PostMapping("/sign-in")
-    public void signIn(@RequestBody UserLoginResponse userLoginResponse) {
-        // TODO document why this method is empty
+    public String signIn(@RequestBody UserLoginResponse userLoginResponse) {
+        return "sign-in success";
     }
 
     @PostMapping("/enable/{userId}")
-    public void locked(@PathVariable int userId) {
-        // TODO document why this method is empty
+    public String locked(@PathVariable int userId) {
+        return "Locked Account";
     }
 
 }
