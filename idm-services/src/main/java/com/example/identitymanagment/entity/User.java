@@ -22,6 +22,7 @@ public class User implements UserDetails {
     private String name;
     private String surname;
     private String username;
+    private String email;
     private String password;
     private Set<Role> role;
     private boolean enabled;
@@ -71,6 +72,14 @@ public class User implements UserDetails {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
