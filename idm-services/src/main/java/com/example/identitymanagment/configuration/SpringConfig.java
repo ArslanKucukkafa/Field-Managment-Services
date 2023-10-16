@@ -41,11 +41,6 @@ public class SpringConfig implements ApplicationListener<ContextRefreshedEvent>{
     }
 
     public List<String> getScanedEndpoints() {
-//        try {
-//            return objectMapper().writeValueAsString(scanedEndpoints);
-//        } catch (Exception e) {
-//            return e.toString();
-//        }
         return endpoints;
     }
 
@@ -56,7 +51,6 @@ public class SpringConfig implements ApplicationListener<ContextRefreshedEvent>{
 
     @Bean
     public UserDetailsService userDetailsService() {return new UserDetailsServiceImpl();}
-
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
