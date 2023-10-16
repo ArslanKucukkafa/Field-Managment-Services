@@ -21,8 +21,8 @@ public class JwtFactory implements Serializable {
 
     public String generateToken(Authentication authentication){
         return Jwts.builder().setSubject(authentication.getName()).setExpiration(
-                        new Date(System.currentTimeMillis()+1000*tokenValidty)).
-                setIssuer("Arslan19")
+                        new Date(System.currentTimeMillis()+1000*tokenValidty))
+                .setIssuer("Overlord")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .signWith(SignatureAlgorithm.HS256,secret).compact();
     }
@@ -38,4 +38,5 @@ public class JwtFactory implements Serializable {
         }
         return false;
     }
+
 }
