@@ -26,8 +26,13 @@ public class SecurityConfig {
             "/api/v1/laboratories/login",
             "/idm/sign-up",
             "/idm/sign-in",
-            "/idm/get-permission",
+            "/role/get-permission",
             "/role/create",
+            "/role/getRoles",
+            "/role/addPermission",
+            "/role/create",
+            "/role/removePermission",
+            "/role/removeRole"
 
     };
 

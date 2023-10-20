@@ -22,9 +22,6 @@ public class UserController {
     @Autowired
     UserServiceImpl userDetailsService;
 
-    @Autowired
-    SpringConfig springConfig;
-
     @PostMapping("/sign-up")
     public String signUp(@RequestBody UserRegisterResponse userRegisterResponse) {
         userDetailsService.saveUser(userRegisterResponse);
@@ -44,8 +41,5 @@ public class UserController {
     @GetMapping("/get-token")
     public String getToken(){return "token";}
 
-    @GetMapping("/get-permission")
-    public List<String> getPermission(){
-        return springConfig.getScanedEndpoints();}
 
 }

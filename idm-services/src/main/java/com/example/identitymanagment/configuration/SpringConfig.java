@@ -1,14 +1,18 @@
 package com.example.identitymanagment.configuration;
 
+import com.example.identitymanagment.repository.PermissionRepository;
 import com.example.identitymanagment.service.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -25,13 +29,15 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
-public class SpringConfig implements ApplicationListener<ContextRefreshedEvent>{
-
+public class SpringConfig implements ApplicationListener<ContextRefreshedEvent>, CommandLineRunner {
+    @Autowired
+    PermissionRepository permissionRepository;
     private final Logger LOGGER = LoggerFactory.getLogger("EndpointsListener.class");
 
     public Map<RequestMappingInfo, HandlerMethod> scanedEndpoints = null;
     List<String> endpoints = new ArrayList<>();
     @Override
+    @Order(1)
     public void onApplicationEvent(ContextRefreshedEvent event) {
         ApplicationContext applicationContext = event.getApplicationContext();
         RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext
@@ -70,6 +76,13 @@ public class SpringConfig implements ApplicationListener<ContextRefreshedEvent>{
     }
 
 
+    @Override
+    @Order(2)
+    public void run(String... args) throws Exception {
 
-
+        // TODO : implement this method ---> Burda endpoint listesini permission halde almamız lazım.  Dolaysı ile scanedEndpoints map objesini filrelemek lazım
+//        endpoints.forEach((endpoint) -> {
+//            permissionRepository.save(endpoint);
+//        });
+    }
 }

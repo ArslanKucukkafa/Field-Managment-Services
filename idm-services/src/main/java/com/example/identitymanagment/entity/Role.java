@@ -3,6 +3,7 @@ package com.example.identitymanagment.entity;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.List;
 
@@ -14,8 +15,9 @@ import java.util.List;
 @Setter
 public class Role {
     @Id
-    private int id;
+    private String id;
     private String name;
+    @DocumentReference(lazy = true)
     private List<Permission> permission;
 
 }

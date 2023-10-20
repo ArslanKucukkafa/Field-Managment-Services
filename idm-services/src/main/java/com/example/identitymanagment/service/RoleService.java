@@ -6,6 +6,8 @@ import com.example.identitymanagment.entity.Role;
 import com.example.identitymanagment.entity.dto.RoleRegisterDto;
 import com.example.identitymanagment.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +22,7 @@ public class RoleService {
     Logger LOGGER = Logger.getLogger(RoleService.class.getName());
     @Autowired
     RoleRepository roleRepository;
-    public void addPermission(Role role, Permission permission){
+    public void addPermissionToRole(Role role, Permission permission){
        Optional<Role> optionalRolerole = roleRepository.findByName(role.getName());
        if(optionalRolerole.isPresent()){
            optionalRolerole.get().getPermission().add(permission);
@@ -30,7 +32,7 @@ public class RoleService {
        }
     }
 
-    public void removePermission(String roleName, Permission permission){
+    public void removePermissionFromRole(String roleName, Permission permission){
         Optional<Role> role = roleRepository.findByName(roleName);
         if(role.isPresent()){
             role.get().getPermission().remove(permission);
@@ -44,9 +46,16 @@ public class RoleService {
         return config.getScanedEndpoints();
     }
 
-    public void addRole(RoleRegisterDto roleRegisterDto){
-        Role role = roleRegisterDto.roleRegisterDtoToRoleEntity(roleRegisterDto);
-        roleRepository.save(role);    }
+    public ResponseEntity<String> addRole(RoleRegisterDto roleRegisterDto){
+        Optional<Role> currentRole = roleRepository.findByName(roleRegisterDto.getName());
+        if(currentRole.isPresent()){
+            return new ResponseEntity<>("Role already exist with name : "+roleRegisterDto.getName(), HttpStatus.ALREADY_REPORTED);
+        }else {
+            Role role = roleRegisterDto.roleRegisterDtoToRoleEntity(roleRegisterDto);
+            roleRepository.save(role);
+            return new ResponseEntity<>("Role created with name : "+roleRegisterDto.getName(), HttpStatus.CREATED);
+        }
+  }
 
     public void removeRole(String roleName){
         Optional<Role> role = roleRepository.findByName("ROLE_ADMIN");
