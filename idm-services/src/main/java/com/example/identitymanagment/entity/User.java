@@ -18,7 +18,7 @@ import java.util.Set;
 @Document(collection = "users")
 public class User implements UserDetails {
     @Id
-    private int id;
+    private String id;
     private String name;
     private String surname;
     private String username;
@@ -37,7 +37,7 @@ public class User implements UserDetails {
         return grantedAuthorities;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
