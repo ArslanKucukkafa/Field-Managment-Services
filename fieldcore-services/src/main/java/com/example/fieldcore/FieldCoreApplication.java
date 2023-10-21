@@ -8,6 +8,4 @@ public class FieldCoreApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(FieldCoreApplication.class, args);
-    }
-
-}
+    }}

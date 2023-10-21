@@ -3,13 +3,10 @@ package com.example.fieldcore.service;
 import com.example.fieldcore.entity.FieldModel;
 import com.example.fieldcore.entity.Properties;
 import com.example.fieldcore.entity.TokenModel;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
+import java.util.*;
 import java.util.logging.Logger;
 
 public interface FieldProvider {
@@ -51,11 +48,9 @@ public interface FieldProvider {
         map1.put("plid","3");
         map1.put("ver","web");
         map.put("base_params",map1);
+
         HttpEntity<HashMap> entity = new HttpEntity<>(map,headers);
         FieldModel model = restTemplate.exchange(url,HttpMethod.POST,entity, FieldModel.class).getBody();
-        logger.info("Field Properties Alındı");
         return model.getProperties();
-
     }
-
 }

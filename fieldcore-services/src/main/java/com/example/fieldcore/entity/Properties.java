@@ -1,18 +1,15 @@
 package com.example.fieldcore.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 @Document(collection = "properties")
 public class Properties {
     @Id
-    private int propertiesId;
+    private int properties_id;
     private String ilceAd;
     private String mevkii;
     private String parselNo;
