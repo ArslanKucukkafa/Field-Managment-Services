@@ -1,17 +1,10 @@
 package com.example.identitymanagment.rest;
 
-import com.example.identitymanagment.configuration.SpringConfig;
-import com.example.identitymanagment.entity.dto.UserLoginResponse;
-import com.example.identitymanagment.entity.dto.UserRegisterResponse;
+import com.example.identitymanagment.entity.dto.UserLoginDto;
+import com.example.identitymanagment.entity.dto.UserRegisterDto;
 import com.example.identitymanagment.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @RequestMapping("/idm")
 @RestController
@@ -23,12 +16,12 @@ public class UserController {
     UserServiceImpl userDetailsService;
 
     @PostMapping("/sign-up")
-    public String signUp(@RequestBody UserRegisterResponse userRegisterResponse) {
+    public String signUp(@RequestBody UserRegisterDto userRegisterResponse) {
         userDetailsService.saveUser(userRegisterResponse);
         return  "sign-up success";
     }
     @PostMapping("/sign-in")
-    public String signIn(@RequestBody UserLoginResponse userLoginResponse) {
+    public String signIn(@RequestBody UserLoginDto userLoginResponse) {
         return userService.loginUser(userLoginResponse);
     }
 
@@ -40,6 +33,5 @@ public class UserController {
     // TODO : implement this method
     @GetMapping("/get-token")
     public String getToken(){return "token";}
-
 
 }

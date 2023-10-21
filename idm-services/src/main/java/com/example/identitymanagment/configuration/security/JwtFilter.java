@@ -47,7 +47,6 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         if (username != null && jwtToken!=null && SecurityContextHolder.getContext().getAuthentication() == null){
-            System.out.println("USER DETAİLDS SERVİCE İS WORK İN TOKEN FİLTER"+" İÇERDDDEDEEDEDEDE");
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (jwtFactory.tokenValidate(jwtToken)) {
                 System.out.println(jwtToken);

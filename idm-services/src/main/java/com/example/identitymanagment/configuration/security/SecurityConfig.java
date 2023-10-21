@@ -29,11 +29,11 @@ public class SecurityConfig {
             "/role/get-permission",
             "/role/create",
             "/role/getRoles",
-            "/role/addPermission",
+            "/role/addPermission/**",
             "/role/create",
-            "/role/removePermission",
-            "/role/removeRole"
-
+            "/role/removePermission/**",
+            "/role/removeRole/**",
+            "role/hello"
     };
 
 

@@ -2,6 +2,7 @@ package com.example.identitymanagment.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,10 +14,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Document(collection = "users")
 public class User implements UserDetails {
+
+    public User (User user){
+        this.id = user.getId();
+        this.name = user.getName();
+        this.surname = user.getSurname();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.role = user.getRole();
+        this.enabled = user.isEnabled();
+    }
+
+
     @Id
     private String id;
     private String name;

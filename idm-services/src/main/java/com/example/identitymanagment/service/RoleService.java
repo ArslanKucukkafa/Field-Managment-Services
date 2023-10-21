@@ -1,9 +1,9 @@
 package com.example.identitymanagment.service;
 
-import com.example.identitymanagment.configuration.SpringConfig;
 import com.example.identitymanagment.entity.Permission;
 import com.example.identitymanagment.entity.Role;
 import com.example.identitymanagment.entity.dto.RoleRegisterDto;
+import com.example.identitymanagment.repository.PermissionRepository;
 import com.example.identitymanagment.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,33 +17,52 @@ import java.util.logging.Logger;
 @Service
 public class RoleService {
     @Autowired
-    SpringConfig config;
+    RoleRepository roleRepository;
+
+    @Autowired
+    PermissionRepository permissionRepository;
 
     Logger LOGGER = Logger.getLogger(RoleService.class.getName());
-    @Autowired
-    RoleRepository roleRepository;
-    public void addPermissionToRole(Role role, Permission permission){
-       Optional<Role> optionalRolerole = roleRepository.findByName(role.getName());
-       if(optionalRolerole.isPresent()){
-           optionalRolerole.get().getPermission().add(permission);
-            roleRepository.save(optionalRolerole.get());
-       }else {
-           LOGGER.warning("Role not found with name : "+role.getName()+"");
-       }
-    }
 
-    public void removePermissionFromRole(String roleName, Permission permission){
-        Optional<Role> role = roleRepository.findByName(roleName);
+    public void addPermissionToRole(String roleId, String permission){
+        Optional<Role> role = roleRepository.findById(roleId);
+        Optional<Permission> optionalPermission = permissionRepository.findById(permission);
         if(role.isPresent()){
-            role.get().getPermission().remove(permission);
-            roleRepository.save(role.get());
-        }else {
-            LOGGER.warning("Role not found with name : "+roleName+"");
+            if (optionalPermission.isPresent()){
+                role.get().getPermission().add(optionalPermission.get());
+                roleRepository.save(role.get());
+            }
+//            permissions.forEach(permissionId -> {
+//                Optional<Permission> permission = permissionRepository.findById(permissionId);
+//                if(permission.isPresent()){
+//                    role.get().getPermission().add(permission.get());
+//                }else {
+//                    LOGGER.warning("Permission not found with id : "+permissionId);
+//                }
+//            });
+        } else {
+            LOGGER.warning("Role not found with id : "+roleId);
         }
     }
 
-    public List<String> getPermission(){
-        return config.getScanedEndpoints();
+    public void removePermissionFromRole(String roleId, String permissionId){
+        Optional<Role> role = roleRepository.findById(roleId);
+        Optional<Permission> optionalPermission = permissionRepository.findById(permissionId);
+        if(role.isPresent()){
+            if(optionalPermission.isPresent()){
+                role.get().getPermission().remove(optionalPermission.get());
+                roleRepository.save(role.get());
+            }
+            else {
+                LOGGER.warning("Permission not found with id : "+permissionId);
+            }
+        }else {
+            LOGGER.warning("Role not found with id : "+roleId);
+        }
+    }
+
+    public List<Permission> getPermission(){
+        return permissionRepository.findAll();
     }
 
     public ResponseEntity<String> addRole(RoleRegisterDto roleRegisterDto){
@@ -57,10 +76,13 @@ public class RoleService {
         }
   }
 
-    public void removeRole(String roleName){
-        Optional<Role> role = roleRepository.findByName("ROLE_ADMIN");
+    public void removeRole(String roleId){
+        Optional<Role> role = roleRepository.findById(roleId);
         if (role.isPresent()){
-            roleRepository.delete(role.get());}
+            roleRepository.delete(role.get());
+        }else {
+            LOGGER.warning("Role not found with id : "+roleId);
+        }
     }
 
     public List<Role> getRoles(){

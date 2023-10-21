@@ -2,6 +2,7 @@ package com.example.identitymanagment.entity;
 
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -13,9 +14,16 @@ import java.lang.annotation.Documented;
 @Getter
 @Setter
 @Document(collection = "permissions")
+@NoArgsConstructor
 public class Permission {
     @Id
     String id;
     String endpoint_url;
     String http_method;
+
+    public Permission(String endpoint_url, String http_method) {
+        this.endpoint_url = endpoint_url;
+        this.http_method = http_method;
+    }
+
 }
