@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,27 +20,36 @@ public class RoleController {
     @Autowired
     RoleService roleService;
 
-    @PostMapping("/addPermission")
-    public void addPermission(@RequestBody Permission permission, @RequestBody Role role){
-        roleService.addPermissionToRole(role,permission);
+    @PostMapping("/addPermission/{roleId}/{permissionId}")
+    public void addPermission(@PathVariable String roleId, @PathVariable String permissionId){
+        roleService.addPermissionToRole(roleId,permissionId);
     }
-    @PostMapping("/removePermission")
-    public void removePermission(@RequestBody Permission permission ,String roleName){
-        roleService.removePermissionFromRole(roleName,permission);
+    @PostMapping("/removePermission/{roleId}/{permissionId}")
+    public void removePermission(@PathVariable String roleId ,@PathVariable String permissionId){
+        roleService.removePermissionFromRole(roleId,permissionId);
     }
     @PostMapping("/create")
     public ResponseEntity<String> addRole(@RequestBody RoleRegisterDto roleRegisterDto){
         return roleService.addRole(roleRegisterDto);
     }
-    @PostMapping("/removeRole")
-    public void removeRole(@RequestBody Role role){
-       roleService.removeRole(role.getName());
+    @PostMapping("/removeRole/{roleId}")
+    public void removeRole(@PathVariable String roleId){
+       roleService.removeRole(roleId);
     }
     @GetMapping("/getRoles")
     public List<Role> getRoles(){
         return roleService.getRoles();
     }
     @GetMapping("/get-permission")
-    public List<String> getPermission(){
+    public List<Permission> getPermission(){
         return roleService.getPermission();}
+
+    @GetMapping("/hello")
+    public List<String> retrunHello(){
+        List <String> list = new ArrayList<>();
+        for (int i = 0; i <10 ; i++) {
+            list.add("Hello");
+        }
+        return list;
+    }
 }

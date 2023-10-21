@@ -22,7 +22,7 @@ public class JwtFactory implements Serializable {
     public String generateToken(Authentication authentication){
         return Jwts.builder().setSubject(authentication.getName()).setExpiration(
                         new Date(System.currentTimeMillis()+1000*tokenValidty))
-                .setIssuer("Overlord")
+                .setIssuer("Arslan19")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .signWith(SignatureAlgorithm.HS256,secret).compact();
     }

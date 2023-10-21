@@ -1,7 +1,9 @@
 package com.example.identitymanagment.configuration;
 
+import com.example.identitymanagment.entity.Permission;
 import com.example.identitymanagment.repository.PermissionRepository;
 import com.example.identitymanagment.service.UserDetailsServiceImpl;
+import com.example.identitymanagment.service.UserServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +26,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Configuration
 public class SpringConfig implements ApplicationListener<ContextRefreshedEvent>, CommandLineRunner {
@@ -35,7 +35,10 @@ public class SpringConfig implements ApplicationListener<ContextRefreshedEvent>,
     private final Logger LOGGER = LoggerFactory.getLogger("EndpointsListener.class");
 
     public Map<RequestMappingInfo, HandlerMethod> scanedEndpoints = null;
-    List<String> endpoints = new ArrayList<>();
+
+    List<Permission> endpoints = new ArrayList<>();
+
+
     @Override
     @Order(1)
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -43,10 +46,18 @@ public class SpringConfig implements ApplicationListener<ContextRefreshedEvent>,
         RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext
                 .getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class);
         scanedEndpoints = requestMappingHandlerMapping.getHandlerMethods();
-        scanedEndpoints.forEach((key, value) -> {endpoints.add(key.toString());});
+        for (RequestMappingInfo info:scanedEndpoints.keySet()) {
+              {
+                  if(info.getMethodsCondition().getMethods().stream().findFirst().isPresent()){
+                      var a = info.getPathPatternsCondition().getPatterns().stream().findFirst().get().getPatternString();
+                      var b = info.getMethodsCondition().getMethods().stream().findFirst().get().name();
+                      endpoints.add(new Permission(a, b));
+                  }
+              }
+        }
     }
 
-    public List<String> getScanedEndpoints() {
+    public List<Permission> getScanedEndpoints() {
         return endpoints;
     }
 
@@ -79,10 +90,8 @@ public class SpringConfig implements ApplicationListener<ContextRefreshedEvent>,
     @Override
     @Order(2)
     public void run(String... args) throws Exception {
-
-        // TODO : implement this method ---> Burda endpoint listesini permission halde almamız lazım.  Dolaysı ile scanedEndpoints map objesini filrelemek lazım
-//        endpoints.forEach((endpoint) -> {
-//            permissionRepository.save(endpoint);
-//        });
+        endpoints.forEach(permission -> {
+            permissionRepository.save(permission);
+        });
     }
 }
