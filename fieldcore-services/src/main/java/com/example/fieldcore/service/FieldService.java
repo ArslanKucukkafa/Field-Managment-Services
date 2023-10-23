@@ -1,45 +1,42 @@
 package com.example.fieldcore.service;
 
-import com.example.fieldcore.entity.CoordinateModel;
-import com.example.fieldcore.entity.CriterResponse;
-import com.example.fieldcore.entity.Properties;
-import com.example.fieldcore.repository.FieldRepository;
+import com.example.fieldcore.repository.PropertiesRepository;
+import com.example.fieldcore.tkgm.entity.Properties;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FieldService implements FieldProvider{
+public class FieldService implements FieldProvider {
     @Autowired
-    private FieldRepository fieldRepository;
+    private PropertiesRepository propertiesRepository;
     private final Logger logger = LoggerFactory.getLogger(FieldService.class);
 
-//    public ResponseEntity<Properties> saveField(CoordinateModel coordinateModel){
-//        Properties properties = getFieldProperties(coordinateModel.getLat(),coordinateModel.getLng());
-//        fieldRepository.save(properties);
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
-
-//    public List<Properties> listFields(){
-//        List<Properties> properties = fieldRepository.findAll();
-//        return properties;
-//    }
-
-    public String updateField(){
-        return "Not supported yet";
+    public void saveField(String lat, String lng) {
+        try {
+            var field = getFieldProps(lat, lng);
+            propertiesRepository.save(field);
+        } catch (JsonProcessingException e) {
+            logger.error("Error while saving field", e);
+        }
     }
 
-//    public ResponseEntity deleteField(int propertiesId){
-//        Properties properties = fieldRepository.findById(propertiesId).orElseThrow();
-//        fieldRepository.delete(properties);
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
 
-//    public ResponseEntity getFieldsWithQriterias(CriterResponse criteries){
-//
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
+    public void updateField(Properties properties) {
+        propertiesRepository.save(properties);
+    }
+
+    public void getFields1() {
+        // TODO İmplement this method ----> get field list with owner id
+    }
+
+    public void getFields2(){
+        // TODO İmplement this method ----> get field list with publish status
+    }
+
+    public void getFields3(){
+        // TODO İmplement this method ----> get field list with criteria
+    }
 }

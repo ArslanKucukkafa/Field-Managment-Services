@@ -1,3 +1,5 @@
 fieldcore-services/target
 idm-services/target
+job-services/target
+gateway-services/target
 .idea
