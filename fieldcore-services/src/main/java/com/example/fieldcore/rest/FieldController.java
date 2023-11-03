@@ -29,19 +29,19 @@ public class FieldController {
         fieldService.updateField(properties);
     }
 
-    @GetMapping("/getFields")
+    @GetMapping("/getFields1")
     public List<Properties> getFieldsWithOwner() {
         //TODO implement this method
         return null;
     }
 
-    @GetMapping("/getFields")
+    @GetMapping("/getFields2")
     public List<Properties> getFieldsWithPublishStatus() {
         //TODO implement this method
         return null;
     }
 
-    @GetMapping("/getFields")
+    @GetMapping("/getFields3")
     public List<Properties> getFieldsWithCriteria() {
         //TODO implement this method
         return null;
