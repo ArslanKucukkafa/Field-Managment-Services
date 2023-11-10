@@ -21,12 +21,14 @@
         <module>gateway-services</module>
         <module>job-services</module>
         <module>eureka-services</module>
+        <module>config-services</module>
     </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <spring-cloud.version>2022.0.4</spring-cloud.version>
+        <pulsar.version>2.10.0</pulsar.version>
     </properties>
 
     <dependencyManagement>

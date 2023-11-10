@@ -2,4 +2,7 @@ fieldcore-services/target
 idm-services/target
 job-services/target
 gateway-services/target
+field-microservices.iml
+eureka-services/target
+config-services/target
 .idea

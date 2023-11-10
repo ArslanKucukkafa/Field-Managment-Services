@@ -24,16 +24,16 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/api/v1/laboratories/save",
             "/api/v1/laboratories/login",
-            "/idm/sign-up",
-            "/idm/sign-in",
-            "/role/get-permission",
-            "/role/create",
-            "/role/getRoles",
-            "/role/addPermission/**",
-            "/role/create",
-            "/role/removePermission/**",
-            "/role/removeRole/**",
-            "role/hello"
+            "/idm/auth/sign-up",
+            "/idm/auth/sign-in",
+            "/idm/role/get-permission",
+            "/idm/role/create",
+            "/idm/role/getRoles",
+            "/idm/role/addPermission/**",
+            "/idm/role/create",
+            "/idm/role/removePermission/**",
+            "/idm/role/removeRole/**",
+            "/idm/role/hello"
     };
 
 

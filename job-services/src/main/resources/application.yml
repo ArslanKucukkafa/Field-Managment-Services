@@ -1,24 +1,20 @@
-app:
-  jwt:
-    get:
-      token:
-        uri: /authenticate
-    secret: springbootjwtsecret
-    token:
-      validity: 3600
+# Database configuration
 spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-  banner:
-    location: banner.txt
   data:
     mongodb:
       database: Field_db
       host: localhost
       port: 27017
       uri: mongodb://localhost:27017/Field_db
+
+# Server configuration
 server:
     port: 8083
+
+
+# eureka configuration
 eureka:
   instance:
     hostname: localhost

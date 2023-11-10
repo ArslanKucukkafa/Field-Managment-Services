@@ -30,9 +30,9 @@ public class FieldController {
     }
 
     @GetMapping("/getFields1")
-    public List<Properties> getFieldsWithOwner() {
+    public String getFieldsWithOwner() {
         //TODO implement this method
-        return null;
+        return "Hello Gateway Kazım";
     }
 
     @GetMapping("/getFields2")
