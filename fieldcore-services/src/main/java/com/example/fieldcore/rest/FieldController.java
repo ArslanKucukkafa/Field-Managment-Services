@@ -36,9 +36,9 @@ public class FieldController {
     }
 
     @GetMapping("/getFields2")
-    public List<Properties> getFieldsWithPublishStatus() {
+    public String getFieldsWithPublishStatus() {
         //TODO implement this method
-        return null;
+        return "Hello Gateway Kazım 2";
     }
 
     @GetMapping("/getFields3")

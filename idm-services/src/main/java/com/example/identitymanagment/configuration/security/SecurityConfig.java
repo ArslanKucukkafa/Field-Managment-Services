@@ -33,7 +33,12 @@ public class SecurityConfig {
             "/idm/role/create",
             "/idm/role/removePermission/**",
             "/idm/role/removeRole/**",
-            "/idm/role/hello"
+            "/idm/role/hello",
+            "/actuator/**",
+            "/actuator/health",
+            "/actuator/info",
+            "/actuator",
+            "/idm-services/**",
     };
 
 

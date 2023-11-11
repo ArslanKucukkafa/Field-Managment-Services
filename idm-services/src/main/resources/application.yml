@@ -18,14 +18,37 @@ spring:
       host: localhost
       port: 27017
       uri: mongodb://localhost:27017/Field_db
+  pulsar:
+    client:
+      service-url: pulsar://localhost:6650
+
 server:
   port: 8082
 eureka:
   instance:
     hostname: localhost
-    appname: idm-service
+    appname: idm-services
   client:
     serviceUrl:
       defaultZone : http://${eureka.instance.hostname}:8761/eureka/
     healthcheck:
       enabled=true:
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      enabled: true
+
+openapi:
+  service:
+    title: idm-services
+    version: 1.0.0
+    url: http://localhost:8080
+springdoc:
+  api-docs:
+    path: /idm-services/v3/api-docs
+  swagger-ui:
+    path: /idm-services/swagger-ui.html

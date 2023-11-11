@@ -17,18 +17,73 @@ eureka:
 spring:
   application:
     name: gateway-services
+  pulsar:
+    client:
+      service-url: pulsar://localhost:6650
+
   cloud:
     gateway:
       routes:
+         # IdmService
         - id: idm-services
           uri: http://localhost:8082
           predicates:
-                - Path=/idm/**
-        - id: fieldcore-services
+                - Path=/idm-services/** , /idm/**
+          filters:
+            - AuthenticationFilter
+          #FieldService
+        - id: field-services
           uri: http://localhost:8081
           predicates:
-                - Path=/field/**
+                - Path=/field-services/** , /field/**
+          filters:
+            - AuthenticationFilter
+            #JobService
         - id: job-services
           uri: http://localhost:8083
           predicates:
-                - Path=/job/**
+                - Path=/job-services/** , /job/**
+          filters:
+            - AuthenticationFilter
+
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+# Actuator Configurations
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      enabled: true
+
+springdoc:
+  enable-native-support: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: API Gateway Services
+
+      - url: /job-services/v3/api-docs
+        name: Job Services
+
+      - url: /idm-services/v3/api-docs
+        name: Idm Services
+
+      - url: /field-services/v3/api-docs
+        name: Field Services
+
+server:
+  port: 8080
+
+

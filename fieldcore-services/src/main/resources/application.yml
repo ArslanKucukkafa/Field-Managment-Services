@@ -9,6 +9,9 @@ spring:
       password: 123456
       port: 27017
       username: arslan
+  pulsar:
+    client:
+      service-url: pulsar://localhost:6650
 
 # Server Configuration
 server:
@@ -18,9 +21,28 @@ server:
 eureka:
   instance:
     hostname: localhost
-    appname: field-core-services
+    appname: field-services
   client:
     serviceUrl:
       defaultZone : http://${eureka.instance.hostname}:8761/eureka/
     healthcheck:
       enabled=true:
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      enabled: true
+
+openapi:
+  service:
+    title: field-services
+    version: 1.0.0
+    url: http://localhost:8080
+springdoc:
+  api-docs:
+    path: /field-services/v3/api-docs
+  swagger-ui:
+    path: /field-services/swagger-ui.html

@@ -2,11 +2,11 @@ package com.example.gateway.services;
 
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Service
+@Component
 public class JwtUtils {
 
     @Value("${app.jwt.secret}")
