@@ -1,5 +1,7 @@
 package com.example.gateway.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.route.RouteDefinition;
@@ -8,11 +10,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Configuration
 public class AppConfig {
+
+    private final Logger LOGGER = LoggerFactory.getLogger("EndpointsListener.class");
+    private final List<Set> endpoints = new ArrayList<>();
     @Bean
     public RestTemplate template(){
         return new RestTemplate();
@@ -31,6 +36,35 @@ public class AppConfig {
             groups.add(GroupedOpenApi.builder().pathsToMatch("/" + name + "/**").group(name).build());
         });
         return groups;
+    }
+
+
+    @Bean
+    public  void scanEndpoints (){
+        if (endpoints.isEmpty()){
+            List<RouteDefinition> definitions = locator.getRouteDefinitions().collectList().block();
+            definitions.stream().filter(routeDefinition -> routeDefinition.getId().matches(".*-services")).forEach(routeDefinition -> {
+                var paths  = template().getForEntity(routeDefinition.getUri().toString()+"/"+routeDefinition.getId() + "/v3/api-docs", Map.class).getBody().get("paths");
+
+                for (Map.Entry<String, Object> entry : ((LinkedHashMap<String, Object>) paths).entrySet()) {
+                    Set<String> endpoint = new HashSet<>();
+                    endpoint.add(entry.getKey());
+                    for (var s : ((LinkedHashMap<String, Object>) entry.getValue()).entrySet()) {
+                        endpoint.add(s.getKey());
+                    }
+                    endpoints.add(endpoint);
+                }
+
+            });
+                LOGGER.info("Endpoints scanned");
+
+        }else {
+            LOGGER.info("Endpoints already scanned");
+        }
+
+
+
+
     }
 
 }
