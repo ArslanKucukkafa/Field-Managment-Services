@@ -6,3 +6,7 @@ field-microservices.iml
 eureka-services/target
 config-services/target
 .idea
+idm-services.iml
+field-microservices.iml
+job-services.iml
+config-services.iml

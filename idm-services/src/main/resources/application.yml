@@ -18,9 +18,6 @@ spring:
       host: localhost
       port: 27017
       uri: mongodb://localhost:27017/Field_db
-  pulsar:
-    client:
-      service-url: pulsar://localhost:6650
 
 server:
   port: 8082
@@ -52,3 +49,12 @@ springdoc:
     path: /idm-services/v3/api-docs
   swagger-ui:
     path: /idm-services/swagger-ui.html
+
+pulsar:
+  consumer:
+    url: pulsar://localhost:6650
+    topic: permission-topic
+    consumer-name: permission_sender
+user:
+  management:
+    enable: false

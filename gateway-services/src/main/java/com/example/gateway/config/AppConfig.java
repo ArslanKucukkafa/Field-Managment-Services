@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Configuration
 public class AppConfig {
@@ -39,8 +38,7 @@ public class AppConfig {
     }
 
 
-    @Bean
-    public  void scanEndpoints (){
+    public List<Set> scanEndpoints (){
         if (endpoints.isEmpty()){
             List<RouteDefinition> definitions = locator.getRouteDefinitions().collectList().block();
             definitions.stream().filter(routeDefinition -> routeDefinition.getId().matches(".*-services")).forEach(routeDefinition -> {
@@ -49,6 +47,9 @@ public class AppConfig {
                 for (Map.Entry<String, Object> entry : ((LinkedHashMap<String, Object>) paths).entrySet()) {
                     Set<String> endpoint = new HashSet<>();
                     endpoint.add(entry.getKey());
+                    if(entry.getKey().contains("/")){
+                        endpoint.add(entry.getKey());
+                    }
                     for (var s : ((LinkedHashMap<String, Object>) entry.getValue()).entrySet()) {
                         endpoint.add(s.getKey());
                     }
@@ -57,14 +58,12 @@ public class AppConfig {
 
             });
                 LOGGER.info("Endpoints scanned");
-
+                return endpoints;
         }else {
             LOGGER.info("Endpoints already scanned");
+            return endpoints;
         }
-
-
-
-
     }
+
 
 }

@@ -1,14 +1,12 @@
 package com.example.identitymanagment.configuration;
 
 import com.example.identitymanagment.entity.Permission;
-import com.example.identitymanagment.repository.PermissionRepository;
 import com.example.identitymanagment.service.UserDetailsServiceImpl;
-import com.example.identitymanagment.service.UserServiceImpl;
+import com.example.identitymanagment.service.pulsar.PulsarConsumer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
@@ -26,17 +24,20 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Configuration
-public class SpringConfig implements ApplicationListener<ContextRefreshedEvent>, CommandLineRunner {
-    @Autowired
-    PermissionRepository permissionRepository;
+public class SpringConfig implements ApplicationListener<ContextRefreshedEvent> {
     private final Logger LOGGER = LoggerFactory.getLogger("EndpointsListener.class");
 
     public Map<RequestMappingInfo, HandlerMethod> scanedEndpoints = null;
 
     List<Permission> endpoints = new ArrayList<>();
+
+    @Autowired
+    PulsarConsumer pulsarConsumer;
 
 
     @Override
@@ -86,12 +87,4 @@ public class SpringConfig implements ApplicationListener<ContextRefreshedEvent>,
         return new BCryptPasswordEncoder();
     }
 
-
-    @Override
-    @Order(2)
-    public void run(String... args) throws Exception {
-        endpoints.forEach(permission -> {
-            permissionRepository.save(permission);
-        });
-    }
 }

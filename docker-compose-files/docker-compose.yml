@@ -9,11 +9,13 @@ services:
     ports:
       - 27017:27017
   pulsar:
-    container_name: pulsar
-    command: 'bin/pulsar standalone'
-    image: 'apachepulsar/pulsar:3.1.1'
+    image: "apachepulsar/pulsar:latest"
+    command: bin/pulsar standalone
+    environment:
+      PULSAR_MEM: " -Xms512m -Xmx512m -XX:MaxDirectMemorySize=1g"
+    volumes:
+      - ./pulsar/data:/pulsar/data
     ports:
-      - '8010:8080'
-      - '6650:6650'
-    tty: true
-    stdin_open: true
+      - "6650:6650"
+      - "8080:8080"
+    restart: unless-stopped

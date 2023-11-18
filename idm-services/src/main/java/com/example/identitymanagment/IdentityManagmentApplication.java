@@ -16,22 +16,17 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.util.Map;
-
 @SpringBootApplication
 @EnableDiscoveryClient
 @OpenAPIDefinition(info = @Info(title = "Identity Managment API", version = "1.0", description = "Documentation IdentityManangment API v1.0"))
 public class IdentityManagmentApplication implements ApplicationListener<ContextRefreshedEvent> {
-
-    private final Logger LOGGER = LoggerFactory.getLogger("EndpointsListener.class");
-
     public static void main(String[] args) {
         SpringApplication.run(IdentityManagmentApplication.class, args);
     }
 
-    @PulsarListener(subscriptionName = "hello-pulsar-sub", topics = "hello-pulsar-topic")
-    void listen(String message) {
-        System.out.println("Message Received: " + message);
-    }
+    private final Logger LOGGER = LoggerFactory.getLogger("EndpointsListener.class");
+
+
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -40,5 +35,11 @@ public class IdentityManagmentApplication implements ApplicationListener<Context
                 .getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class);
         Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
         map.forEach((key, value) -> LOGGER.info("{} {}", key, value));
+    }
+
+
+    @PulsarListener(subscriptionName = "hello-pulsar-sub", topics = "hello-pulsar-topic")
+    void listen(String message) {
+        System.out.println("Message Received: " + message);
     }
 }

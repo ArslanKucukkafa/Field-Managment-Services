@@ -15,4 +15,8 @@ class FieldCoreApplicationTests {
     @Autowired
     FieldProvider fieldProvider;
 
+
+    @Test
+    public void test(){}
+
 }

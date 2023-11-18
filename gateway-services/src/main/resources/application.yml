@@ -17,9 +17,6 @@ eureka:
 spring:
   application:
     name: gateway-services
-  pulsar:
-    client:
-      service-url: pulsar://localhost:6650
 
   cloud:
     gateway:
@@ -53,7 +50,9 @@ spring:
             allowedOrigins: "*"
             allowedHeaders: "*"
             allowedMethods: "*"
-# Actuator Configurations
+
+  main:
+    allow-circular-references: true
 management:
   endpoints:
     web:
@@ -84,6 +83,16 @@ springdoc:
         name: Field Services
 
 server:
-  port: 8080
+  port: 8085
 
+#Pulsar Producer Properties
 
+pulsar:
+  producer:
+    url: pulsar://localhost:6650
+    topic: permission-topic
+    producer-name: permission_sender
+
+user:
+  management:
+    enable: false
