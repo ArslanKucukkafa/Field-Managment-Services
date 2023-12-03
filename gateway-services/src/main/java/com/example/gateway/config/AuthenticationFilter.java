@@ -32,6 +32,8 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
                     authHeader = authHeader.substring(7);
                 }
+
+                // TODO CHECK Router endpoint permission for request
                 try {
 
                     jwtUtils.tokenValidate(authHeader);

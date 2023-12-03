@@ -10,4 +10,3 @@ spring:
         git:
           uri: https://github.com/ArslanKucukkafa/spring-config-server.git
           clone-on-start: true
-

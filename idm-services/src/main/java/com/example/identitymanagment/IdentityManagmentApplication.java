@@ -18,7 +18,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import java.util.Map;
 @SpringBootApplication
 @EnableDiscoveryClient
-@OpenAPIDefinition(info = @Info(title = "Identity Managment API", version = "1.0", description = "Documentation IdentityManangment API v1.0"))
 public class IdentityManagmentApplication implements ApplicationListener<ContextRefreshedEvent> {
     public static void main(String[] args) {
         SpringApplication.run(IdentityManagmentApplication.class, args);

@@ -43,7 +43,7 @@ openapi:
   service:
     title: idm-services
     version: 1.0.0
-    url: http://localhost:8080
+    url: http://localhost:8082
 springdoc:
   api-docs:
     path: /idm-services/v3/api-docs
@@ -51,7 +51,7 @@ springdoc:
     path: /idm-services/swagger-ui.html
 
 pulsar:
-  consumer:
+  connection:
     url: pulsar://localhost:6650
     topic: permission-topic
     consumer-name: permission_sender

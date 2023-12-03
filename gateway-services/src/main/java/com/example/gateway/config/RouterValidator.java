@@ -9,6 +9,8 @@ import java.util.function.Predicate;
 @Component
 public class RouterValidator {
 
+
+
     public static final List<String> openEndpoints = List.of(
             "/idm/auth/sign-up",
             "/idm/auth/sign-in",

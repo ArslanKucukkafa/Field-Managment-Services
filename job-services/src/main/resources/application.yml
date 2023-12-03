@@ -39,7 +39,7 @@ openapi:
   service:
     title: job-services
     version: 1.0.0
-    url: http://localhost:8080
+    url: http://localhost:8083
 springdoc:
   api-docs:
     path: /job-services/v3/api-docs

@@ -18,8 +18,6 @@ import java.util.Map;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@OpenAPIDefinition(info =
-@Info(title = "Job Services API", version = "1.0", description = "Documentation JobServices API v1.0"))
 public class JobServicesApplication implements ApplicationListener<ContextRefreshedEvent> {
 
     private final Logger LOGGER = LoggerFactory.getLogger("EndpointsListener.class");

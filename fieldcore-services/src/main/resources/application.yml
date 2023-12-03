@@ -40,7 +40,7 @@ openapi:
   service:
     title: field-services
     version: 1.0.0
-    url: http://localhost:8080
+    url: http://localhost:8081
 springdoc:
   api-docs:
     path: /field-services/v3/api-docs

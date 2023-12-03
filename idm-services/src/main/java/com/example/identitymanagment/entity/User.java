@@ -1,9 +1,7 @@
 package com.example.identitymanagment.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import jakarta.validation.constraints.Size;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,10 +30,15 @@ public class User implements UserDetails {
 
     @Id
     private String id;
+    @Size(min = 3)
     private String name;
+    @Size(min = 3)
     private String surname;
+    @Size(min = 8)
     private String username;
+    @Size(min = 8)
     private String email;
+    @Size(min = 9)
     private String password;
     private Set<Role> role;
     private boolean enabled;

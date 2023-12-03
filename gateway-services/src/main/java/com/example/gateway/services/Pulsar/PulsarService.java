@@ -1,4 +1,4 @@
-package com.example.gateway.services;
+package com.example.gateway.services.Pulsar;
 
 import com.example.gateway.config.AppConfig;
 import jakarta.annotation.PostConstruct;
@@ -11,23 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 @Service
-public class PulsarProducer {
-
-    private static final Logger LOG = LoggerFactory.getLogger(PulsarProducer.class);
+public class PulsarService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PulsarService.class);
     private PulsarClient pulsarClient;
     @Value("${pulsar.producer.url}")
     public String pulsarServiceUrl;
     public String pulsar_topic = "permission-topic";
-
-
     @Autowired
     AppConfig config;
+
 
     @PostConstruct
     public void init () {
@@ -36,10 +29,9 @@ public class PulsarProducer {
                     .serviceUrl(pulsarServiceUrl)
                     .build();
         } catch (PulsarClientException e) {
-            LOG.error("PulsarClient build failure!! error={}", e.getMessage());
+            LOGGER.error("PulsarClient build failure!! error={}", e.getMessage());
         }
     }
-
     /**
      * produce
      */
@@ -56,12 +48,35 @@ public class PulsarProducer {
             byte[] data = SerializationUtils.serialize(gson.toJson(scanedEndpoints));
             MessageId messageId = producer.send(data);
             producer.close();
-            LOG.info(" pulsar_topic={} pulsar_messageId={}", pulsar_topic, messageId);
+            LOGGER.info(" pulsar_topic={} pulsar_messageId={}", pulsar_topic, messageId);
             return "topic=" + pulsar_topic + "messageId=" + messageId;
         } catch (Exception e) {
-            LOG.error("Pulsar produce failure!! error={}", e.getMessage());
+            LOGGER.error("Pulsar produce failure!! error={}", e.getMessage());
             return "Pulsar produce failure!! error=" + e.getMessage();
         }
+    }
+
+    @PostConstruct
+    public void listenLoginUser(){
+        new Thread(()-> {
+            try {
+                Consumer<byte[]> consumer = pulsarClient.newConsumer(Schema.BYTES)
+                        .topic(pulsar_topic)
+                        .subscriptionName(pulsar_topic)
+                        .subscribe();
+                while (!Thread.currentThread().isInterrupted()) {
+                    Message<byte[]> message = consumer.receive();
+                    byte[] data = message.getData();
+                    var deserializeData = SerializationUtils.deserialize(data);
+                    LOGGER.info("topic={},message={},messageId={}", pulsar_topic, deserializeData, message.getMessageId().toString());
+                    consumer.acknowledge(message);
+                    Thread.sleep(20);
+                }
+
+            }catch (Exception e){
+                LOGGER.error("Pulsar consume failure!! error={}", e.getMessage());
+            }
+        });
     }
 
 }

@@ -18,7 +18,6 @@ import java.util.Map;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@OpenAPIDefinition(info = @Info(title = "Field Services API", version = "1.0", description = "Documentation Field Services API v1.0"))
 public class FieldCoreApplication implements ApplicationListener<ContextRefreshedEvent> {
 
     public static void main(String[] args) {

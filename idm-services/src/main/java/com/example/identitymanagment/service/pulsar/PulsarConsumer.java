@@ -7,39 +7,30 @@ import jakarta.annotation.PostConstruct;
 import org.apache.commons.lang.SerializationUtils;
 import org.apache.pulsar.client.api.*;
 import org.apache.pulsar.shade.com.google.gson.Gson;
+import org.apache.pulsar.shade.com.google.gson.internal.LinkedTreeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class PulsarConsumer {
     @Autowired
     PermissionRepository permissionRepository;
-
-    @Value("${pulsar.consumer.url}")
-    private String pulsarServiceUrl;
     private String pulsar_topic = "permission-topic";
-    private PulsarClient pulsarClient;
+
+    private final PulsarClient pulsarClient;
+
+    private final PulsarClientImpl pulsarClientImpl;
     public final Logger LOGGER = LoggerFactory.getLogger(PulsarConsumer.class);
 
-
-    @PostConstruct
-    public void init() {
-        try {
-            pulsarClient = PulsarClient.builder()
-                    .serviceUrl(pulsarServiceUrl)
-                    .build();
-        } catch (PulsarClientException e) {
-            LOGGER.error("PulsarClient build failure!! error={}", e.getMessage());
-        }
+    public PulsarConsumer(PulsarClient pulsarClient, PulsarClientImpl pulsarClientImpl) {
+        this.pulsarClient = pulsarClient;
+        this.pulsarClientImpl = pulsarClientImpl;
     }
+
 
     /**
      * consume
@@ -58,12 +49,10 @@ public class PulsarConsumer {
                     Message<byte[]> message = consumer.receive();
                     byte[] data = message.getData();
                     var deserializeData = SerializationUtils.deserialize(data);
-                    System.out.println("👉👉👉👉👉👉👉 SHIT");
-                    List<ArrayList> list = gson.fromJson(deserializeData.toString(), List.class);
-                     List<Permission> permissionList = new ArrayList<>();
-                    for (var set : list) {
-                        var permission = new Permission(set.get(0).toString(),set.get(1).toString());
-                        LOGGER.info("save to permission repository {}",set.get(0).toString());
+                    List<LinkedTreeMap> list = gson.fromJson(deserializeData.toString(), List.class);
+                    for (var map : list) {
+                        var permission = new Permission(map.get("url").toString() ,map.get("http_type").toString());
+                        LOGGER.info("save to permission repository {}", map.get("url").toString());
                         permissionRepository.save(permission);
                     }
 

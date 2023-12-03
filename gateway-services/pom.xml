@@ -62,6 +62,14 @@
             <version>${pulsar.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-resolver-dns-native-macos</artifactId>
+            <scope>runtime</scope>
+            <classifier>osx-aarch_64</classifier>
+            <version>4.1.72.Final</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
