@@ -7,6 +7,7 @@ import com.example.identitymanagment.entity.dto.UserLoginDto;
 import com.example.identitymanagment.entity.dto.UserRegisterDto;
 import com.example.identitymanagment.repository.RoleRepository;
 import com.example.identitymanagment.repository.UserRepository;
+import com.example.identitymanagment.service.pulsar.PulsarProducer;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Optional;
 
 @Service
@@ -27,6 +28,8 @@ public class UserServiceImpl {
     UserRepository userRepository;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    PulsarProducer pulsarProducer;
     @Autowired
     private PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -43,8 +46,7 @@ public class UserServiceImpl {
             }else{
                 Optional<Role> baseRole = roleRepository.findByName("BASE_ROLE");
                 User user = registerResponse.registerUserDto(registerResponse);
-                user.setRole(new HashSet<>());
-                user.getRole().add(baseRole.get());
+                user.setRole(baseRole.get());
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
                 userRepository.save(user);
             }
@@ -61,6 +63,11 @@ public class UserServiceImpl {
                 try {
                     Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginResponse.getUsername(),loginResponse.getPassword()));
                     String token = jwtFactory.generateToken(authentication);
+                    Role role = isConfirmed.get().getRole();
+                    HashMap<String,Object> userSessionInfo = new HashMap<>();
+                    userSessionInfo.put("permissions",role.getPermission());
+                    userSessionInfo.put("role",token);
+                    pulsarProducer.currentRoleSendPulsar(userSessionInfo);
                     return token;
                 }catch (Exception e){
                     return e.toString();

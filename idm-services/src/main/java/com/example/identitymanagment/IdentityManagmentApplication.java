@@ -36,9 +36,4 @@ public class IdentityManagmentApplication implements ApplicationListener<Context
         map.forEach((key, value) -> LOGGER.info("{} {}", key, value));
     }
 
-
-    @PulsarListener(subscriptionName = "hello-pulsar-sub", topics = "hello-pulsar-topic")
-    void listen(String message) {
-        System.out.println("Message Received: " + message);
-    }
 }

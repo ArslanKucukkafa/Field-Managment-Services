@@ -24,7 +24,7 @@ public class UserController {
         userDetailsService.saveUser(userRegisterResponse);
         return  "sign-up success";
     }
-    @PostMapping("/sign-in")
+    @PostMapping(value = "/sign-in")
     public String signIn(@RequestBody UserLoginDto userLoginResponse) {
         return userService.loginUser(userLoginResponse);
     }

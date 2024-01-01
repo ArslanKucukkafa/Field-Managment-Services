@@ -40,16 +40,14 @@ public class User implements UserDetails {
     private String email;
     @Size(min = 9)
     private String password;
-    private Set<Role> role;
+    private Role role;
     private boolean enabled;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Role> roles = getRole();
+        Role role = getRole();
         List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
-        for (Role role : roles) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
+        grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         return grantedAuthorities;
     }
 
@@ -122,11 +120,11 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-    public Set<Role> getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(Set<Role> role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

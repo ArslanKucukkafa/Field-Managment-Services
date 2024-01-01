@@ -36,7 +36,7 @@ public class PulsarConsumer {
      * consume
      */
     @PostConstruct
-    public void consume() {
+    public void saveAllPermission() {
         Gson gson = new Gson();
         new Thread(() -> {
             try {
@@ -62,7 +62,7 @@ public class PulsarConsumer {
                     Thread.sleep(20);
                 }
             } catch (Exception e) {
-                LOGGER.error("Pulsar consume failure!! error={}", e.getMessage());
+                LOGGER.error("Pulsar consume failure in saveAllPermission method!! error={}", e.getMessage());
             }
         }).start();
     }
